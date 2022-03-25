@@ -1,0 +1,14 @@
+<view class="container">
+    <view class="wrapper">
+        <view class="input-content">
+            <view class="input-item">
+                <input type="text" placeholder="请输入手机号码" id="phone" bindinput="handleInput" />
+            </view>
+            <view class="input-item">
+                <input type="password" placeholder="请输入密码" id="password" bindinput="handleInput" />
+            </view>
+        </view>
+        <button class="confirm-btn" bindtap="login">登录</button>
+        <view class="forget-section">忘记密码?</view>
+    </view>
+</view>

@@ -1,0 +1,47 @@
+{
+    "pages": [
+        "pages/index/index",
+        "pages/login/login",
+        "pages/personal/personal",
+        "pages/songDetail/songDetail",
+        "pages/rankDetail/rankDetail",
+        "pages/songListAll/songListAll",
+        "pages/songList/songList",
+        "pages/play/play",
+        "pages/search/search"
+    ],
+    "requiredBackgroundModes": [
+        "audio",
+        "location"
+    ],
+    "style": "v2",
+    "sitemapLocation": "sitemap.json",
+    "window": {
+        "navigationBarBackgroundColor": "#ffffff",
+        "navigationBarTextStyle": "black"
+    },
+    "tabBar": {
+        "list": [
+            {
+                "pagePath": "pages/index/index",
+                "text": "主页",
+                "iconPath": "/static/images/tabBar_icon/home.png",
+                "selectedIconPath": "/static/images/tabBar_icon/home_slected.png"
+            },
+            {
+                "pagePath": "pages/search/search",
+                "text": "搜索",
+                "iconPath": "/static/images/tabBar_icon/search.png",
+                "selectedIconPath": "/static/images/tabBar_icon/searched.png"
+            },
+            {
+                "pagePath": "pages/personal/personal",
+                "text": "我",
+                "iconPath": "/static/images/tabBar_icon/me.png",
+                "selectedIconPath": "/static/images/tabBar_icon/me_slected.png"
+            }
+        ],
+        "color": "#0000000",
+        "selectedColor": "#E25252"
+    }
+}

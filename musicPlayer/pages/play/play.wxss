@@ -1,0 +1,129 @@
+/* pages/play/play.wxss */
+.song-detail-container{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+/* 歌曲封面以及信息 */
+.song-detail{
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50rpx;
+}
+.song-image{
+    border-radius: 10rpx;
+    height: 400rpx;
+    width: 400rpx;
+    margin-bottom: 20rpx;
+    box-shadow: 0 0 40rpx 10rpx rgb(131, 131, 131);
+}
+.song-info{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.song-name{
+    margin-bottom: 10rpx;
+    font-size: 36rpx;
+    max-width: 700rpx;
+    text-align: center;
+}
+.singer{
+    font-size: 28rpx;
+    color: rgb(65, 65, 65);
+}
+
+/* 歌词部分 */
+.lyrics-scroll{
+    height: 40%; 
+    padding: 30rpx 0;
+    display: flex;
+    
+}    
+.lyrics{
+     display: flex;
+     justify-content: center;
+     text-align: center; 
+     line-height: 60rpx;
+
+}
+.song-lyrics{
+    max-width: 450rpx;
+}
+.highLight{
+    color: rgba(184, 86, 86, 0.986);
+    font-size: 40rpx;
+    /* max-width: 550rpx; */
+}
+/* 底部控制 */
+.bottom{
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    margin: 0rpx 40rpx 60rpx 40rpx;
+    /* background-color: aquamarine; */
+}
+/* 进度条 */
+.progressBar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60rpx;
+    width: 100%;
+    /* background-color: antiquewhite; */
+    margin-bottom: 30rpx;
+}
+.progressBar .bar{
+    display: flex;
+    width: 460rpx;
+    height: 10rpx;
+    border-radius: 5rpx;
+    background-color: rgba(133, 133, 133, 0.329);
+}
+.bar .currentLength{
+    /* width: 50%; */
+    height: 100%;
+    border-radius: 5rpx;
+    background-color: rgb(34, 34, 34);
+    position: relative;
+}
+.currentLength .smallBall{
+    height: 20rpx;
+    width: 20rpx;
+    border-radius: 50%;
+    background-color: rgba(184, 86, 86, 0.986);
+    position: absolute;
+    right: -5rpx;
+    top: -6rpx;
+}
+
+.bottom-control{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: rgb(34, 34, 34);
+   
+}
+.options{
+    font-size: 50rpx;
+}
+.list{
+    font-size: 38rpx;
+}
+
+.main-control{
+    display: flex;
+    align-items: center;
+}
+.pre,
+.next{
+    font-size: 40rpx;
+}
+.middle{
+    font-size: 80rpx;
+    margin: 0 80rpx;
+}

@@ -1,0 +1,40 @@
+/* 搜索框部分 */
+.search{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30rpx 0;
+}
+.search input{
+    box-sizing: border-box;
+    width: 550rpx;
+    height: 80rpx;
+    background-color: rgb(238, 238, 238);
+    padding: 5rpx 40rpx;
+    border-radius: 50rpx;
+    margin-right: 10rpx;
+}
+.search .searchBtn{
+    font-size: 28rpx;
+    background-color: #E25252;
+    text-align: center;
+    line-height: 70rpx;
+    color: white;
+    border-radius: 40rpx;
+    height: 70rpx;
+    width: 120rpx;
+}
+
+/* 热搜榜部分 */
+.title{
+    text-align: center;
+}
+
+.hot-search-list{
+    line-height: 100rpx;
+    padding: 30rpx;
+}
+.hot-search-item .num{
+    margin-right: 50rpx;
+    font-size: 36rpx;
+}

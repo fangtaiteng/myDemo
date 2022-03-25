@@ -1,0 +1,41 @@
+<view class="song-detail-container">
+    <!-- 歌曲封面以及歌曲信息 -->
+    <view class="song-detail">
+        <image class="song-image" src="{{song.al.picUrl}}"></image>
+        <view class="song-info">
+            <text class="song-name">{{song.name}}</text>
+            <text class="singer">{{song.ar[0].name}}</text>
+        </view>
+    </view>
+    <!-- 歌词部分 -->
+    <scroll-view class="lyrics-scroll" scroll-y="{{true}}" scroll-into-view="{{scrollIntoView}}" scroll-top="{{scrollTop}}" >
+        <view class="lyrics {{item.cla}}" id="{{item.id}}" wx:for="{{lyrics}}" wx:key="index">
+            <text class="song-lyrics" >{{item.content}}</text>
+        </view>
+    </scroll-view>
+    <!-- 底部控制按钮 -->
+    <view class="bottom">
+        <view class="progressBar">
+            <text class="currentTime">{{currentTime}}</text>
+            <view class="bar">
+                <view class="currentLength" style="width:{{currentLength + 'rpx'}}">
+                    <view class="smallBall"></view>
+                </view>
+            </view>
+            <text class="totalTiem">{{musicTotalTime}}</text>
+        </view>
+        <view class="bottom-control">
+            <view class="left-option">
+                <text class="options iconfont icon-suijibofang"></text>
+            </view>
+            <view class="main-control">
+                <text class="pre iconfont icon-yinpin-shangxiayiqu1" id="pre" bindtap="handlerSwitch"></text>
+                <text class="middle iconfont {{isPlay?'icon-24gf-pause2':'icon-dabofangkongzhianniu-bofang'}}" bindtap="playOrStop"></text>
+                <text class="next iconfont icon-yinpin-shangxiayiqu" id="next" bindtap="handlerSwitch"></text>
+            </view>
+            <view class="song-list">
+                <text class="list iconfont icon-liebiao"></text>
+            </view>
+        </view>
+    </view>
+</view>

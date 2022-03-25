@@ -1,0 +1,18 @@
+/* components/NavHeader/NavHeader.wxss */
+/* 推荐歌单头部文字 */
+.header{
+    display: flex;
+    justify-content: space-between;
+}
+.header .title{
+    font-size: 28rpx;
+    font-weight: bold;
+}
+.header .more{
+    float: right;
+    font-size: 26rpx;
+    color: #666;
+    border: 1rpx solid rgb(177, 177, 177);
+    padding: 6rpx 20rpx;
+    border-radius: 28rpx;
+}

@@ -1,0 +1,4 @@
+<view class="header">
+    <text class="title">{{title}}</text>
+    <text class="more" data-url="{{value}}" bindtab="{{handle}}">更多></text>
+</view>

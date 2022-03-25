@@ -1,0 +1,105 @@
+/* pages/index/index.wxss */
+.banners{
+    width: 100%;
+    height: 300rpx;
+}
+.banners image{
+    width: 100%;
+    height: 100%;
+}
+.navContainer{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20rpx;
+}
+.navItem{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 20%;
+}
+.navItem .iconfont{
+    width: 100rpx;
+    height: 100rpx;
+    text-align: center;
+    font-size: 40rpx;
+    line-height: 100rpx;
+    background-color: rgb(226, 82, 82);
+    color: white;
+    border-radius: 50%;
+    margin-bottom: 10rpx;
+}
+.navItem text{
+    font-size: 26rpx;
+}
+
+/* 推荐歌曲 */
+
+.recommendContainer{
+    padding: 20rpx;
+    margin-top: 20rpx;
+}
+
+
+/* 推荐内容区 */
+.recommenScroll{
+    display: flex;
+    margin-top: 20rpx;
+    height:280rpx;
+}
+.scrollItem{
+    width: 200rpx;
+    margin-right: 20rpx;
+    
+}
+.scrollItem image{
+    width: 200rpx;
+    height: 200rpx;
+    border-radius: 10rpx;
+}
+.scrollItem text{
+    /* 多行文本溢出隐藏，省略号代替 */
+    font-size: 26rpx;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;  /*设置对齐方式*/
+    -webkit-line-clamp: 2;
+}
+
+/* 排行榜 */
+.topList{
+    padding: 20rpx;
+}
+.musicItem{
+    display: flex;
+    background-color: rgb(238, 238, 238);
+    border-radius: 10rpx;
+    margin-top: 10rpx;
+}
+.musicImage{
+    height: 200rpx;
+    width: 200rpx;
+    border-radius: 10rpx;
+    margin-right: 20rpx;
+}
+.musicItem .musicList{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin: 10rpx;
+    font-size: 22rpx;
+    color: rgb(36, 36, 36);
+    max-width: 500rpx;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.musicList .top3{
+    height: 30rpx;
+    line-height: 30rpx;
+    max-width: 450rpx;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}

@@ -1,0 +1,75 @@
+/* 用户基本信息 */
+.top{
+    height: 400rpx;
+    display: flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+.top .background{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%; 
+    overflow: hidden;
+}
+.background image{
+    width: inherit;
+}
+.top .userInfo{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1;
+}
+.userInfo image{
+    height: 150rpx;
+    width: 150rpx;
+    border-radius: 50%;
+    margin-bottom: 20rpx;
+}
+.userInfo .userName{
+    font-size: 26rpx;
+    color: white;
+    margin-bottom: 20rpx;
+}
+.userInfo .userFans{
+    color: white;
+    font-size: 22rpx;
+}
+.login-btn{
+    background-color: #E25252;
+    height: 80rpx;
+    width: 250rpx;
+    color: white;
+    text-align: center;
+    line-height: 80rpx;
+    border-radius: 40rpx;
+}
+/* 用户歌单信息 */
+.userMusic{
+    padding: 0 10rpx;
+}
+.listType{
+    display: block;
+    margin: 20rpx;
+    font-size: 26rpx;
+}
+.myMusicItem{
+    display: flex;
+    background-color: rgb(238, 238, 238);
+    margin-bottom: 10rpx;
+    align-items: center;
+    border-radius: 10rpx;
+}
+.myMusicItemImg{
+    height: 120rpx;
+    width: 120rpx;
+    margin-right: 20rpx;
+    border-radius: 10rpx;
+}
+.myMusicItemName{
+    font-size: 26rpx;
+}

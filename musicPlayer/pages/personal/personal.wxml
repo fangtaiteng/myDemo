@@ -1,0 +1,27 @@
+<view class="personalContainer">
+    <!-- 顶部用户基本信息 -->
+    <view class="top">
+        <view wx:if="{{userDetail.nickname}}" class="background">
+            <image src="{{userDetail.backgroundUrl}}"></image>
+        </view>
+        <view wx:if="{{userDetail.nickname}}" class="userInfo">
+            <image src="{{userDetail.avatarUrl}}"></image>
+            <text class="userName">{{userDetail.nickname}}</text>
+            <text class="userFans">关注 {{userDetail.follows}} | 粉丝 {{userDetail.followeds}}</text>
+        </view>
+        <view wx:else class="login-btn" bindtap="toLogin">登录账号</view>
+    </view>
+    <!-- 用户音乐歌单 -->
+    <view wx:if="{{userDetail.nickname}}" class="userMusic">
+        <view class="myMusic">
+            <!-- 我的歌单 -->
+            <text class="listType">我的歌单({{userMusic.length}})</text>
+            <view class="myMusicList">
+                <view class="myMusicItem" wx:for="{{userMusic}}" wx:key="id" data-send="{{item.id}}" bindtap="toSongDetail">
+                    <image class="myMusicItemImg" src="{{item.coverImgUrl}} "></image>
+                    <text class="myMusicItemName">{{item.name}}</text>
+                </view>
+            </view>
+        </view>
+    </view>
+</view>

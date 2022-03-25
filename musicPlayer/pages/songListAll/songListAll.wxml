@@ -1,0 +1,30 @@
+<!--pages/songListAll/songListAll.wxml-->
+<!-- 顶部 -->
+<view class="container">
+    <view class="topInfo">
+        <view class="background">
+            <image class="backgroundImage" src="{{songListData[0].coverImgUrl||songListData[0].picUrl}}" />
+        </view>
+        <view class="content">
+            <image src="{{songListData[0].coverImgUrl || songListData[0].picUrl}}" />
+            <view class="dec">
+                <text class="firstLine">{{songListData[0].name}}</text>
+                <text class="secondLine">{{songListData[0].copywriter}}</text>
+
+            </view>
+        </view>
+    </view>
+
+    <!-- 歌单列表 -->
+    <view class="songList">
+        <text class="listName">{{songListData[0].coverImgUrl?"精品歌单":"推荐歌单"}}</text>
+        <view class="lists">
+            <view class="listItem" wx:for="{{songListData}}" data-send="{{item.id}}" bindtap="toSongDetail">
+                <view class="imageWraper">
+                    <image src="{{item.coverImgUrl || item.picUrl}}" />
+                </view>
+                <text class="itemInfo">{{item.name}}</text>
+            </view> 
+        </view>
+    </view>
+</view>

@@ -1,0 +1,46 @@
+<view class="searchContainer">
+    <!-- 搜索框部分 -->
+    <view class="search">
+        <input type="text" />
+        <view class="searchBtn">搜索</view>
+    </view>
+    <!-- 热搜榜 -->
+    <view class="hot-search">
+        <view class="title">热搜榜</view>
+        <view class="hot-search-list">
+            <view class="hot-search-item">
+                <text class="num">1</text>
+                <text class="name">爱呀爱呀</text>
+            </view>
+            <view class="hot-search-item">
+                <text class="num">1</text>
+                <text class="name">爱呀爱呀</text>
+            </view>
+            <view class="hot-search-item">
+                <text class="num">1</text>
+                <text class="name">爱呀爱呀</text>
+            </view>
+            <view class="hot-search-item">
+                <text class="num">1</text>
+                <text class="name">爱呀爱呀</text>
+            </view>
+            <view class="hot-search-item">
+                <text class="num">1</text>
+                <text class="name">爱呀爱呀</text>
+            </view>
+            <view class="hot-search-item">
+                <text class="num">1</text>
+                <text class="name">爱呀爱呀</text>
+            </view>
+            <view class="hot-search-item">
+                <text class="num">1</text>
+                <text class="name">爱呀爱呀</text>
+            </view>
+            <view class="hot-search-item">
+                <text class="num">1</text>
+                <text class="name">爱呀爱呀</text>
+            </view>
+            
+        </view>
+    </view>
+</view>

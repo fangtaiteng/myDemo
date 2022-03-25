@@ -1,0 +1,4 @@
+@import "./static/images/iconfont/iconfont.wxss";
+page{
+    height: 100%;
+}

@@ -1,0 +1,83 @@
+/* pages/rankDetail/rankDetail.wxss */
+/* 顶部 */
+.topInfo{
+    width: 100%;
+    height: 300rpx;
+    overflow: hidden;
+}
+.topInfo .backgroundImage{
+    width: 100%;
+    filter: blur(20rpx);
+}
+.content{
+    position: absolute;
+    top: 50rpx;
+    left: 20rpx;
+    display: flex;
+    align-items: center;
+    /* background-color: antiquewhite; */
+}
+.content image{
+    height: 200rpx;
+    width: 200rpx;
+    /* margin-right: 30rpx; */
+    border-radius: 10rpx;
+}
+.content .dec{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 60rpx;
+    padding: 30rpx;
+}
+.info{
+    font-size: 45rpx;
+    color: white;
+    max-width: 470rpx;
+    overflow: hidden;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap
+}
+
+/* 歌曲部分 */
+.songList{
+    height: 100%;
+    background-color: rgb(255, 255, 255);
+    border-radius: 30rpx;
+    padding: 20rpx;
+}
+.songItem{
+    height: 120rpx;
+    border-radius: 10rpx;
+    display: flex;
+    align-items: center;
+}
+.songItem .rank{
+    width: 120rpx;
+    text-align: center;
+    color: rgb(90, 90, 90);
+}
+.songInfo{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 20rpx;
+    /* background-color: antiquewhite; */
+    border-bottom: 1rpx rgb(131, 131, 131) solid;
+}
+.songInfo .songArtist,
+.songName{
+    max-width: 550rpx;
+    overflow: hidden;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap
+}
+.songArtist{
+    font-size: 28rpx;
+    color: rgb(49, 49, 49);
+}

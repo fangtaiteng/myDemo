@@ -1,0 +1,34 @@
+<!--pages/recommendSong/recommendSong.wxml-->
+<view class="container">
+
+    <!-- 顶部 -->
+    <view class="top-container">
+       <view class="topInfo">
+        <view class="background">
+            <image class="backgroundImage" src="{{SongDetailData[0].al.picUrl}}" />
+        </view>
+        <view class="content">
+            <image src="{{SongDetailData[0].al.picUrl}}" />
+            <view class="dec">
+                <text class="info"></text>
+            </view>
+        </view>
+    </view>
+    </view>
+
+    <!-- 音乐列表 -->
+    <view class="music-list-container">
+        
+        <view class="music-list">
+            <view class="music-item" wx:for="{{SongDetailData}}" wx:key="id" data-index="{{index}}" data-musicid="{{item.id}}" bindtap="toPlay">
+                <view class="music-img">
+                    <image src="{{item.al.picUrl}}" />
+                </view>
+                <view class="music-text">
+                    <text class="firstline" >{{item.name}}</text>
+                    <text class="secondline" >{{item.ar[0].name}} - {{item.al.name}}</text>
+                </view>
+            </view>
+        </view>
+    </view>
+</view>

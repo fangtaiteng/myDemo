@@ -1,0 +1,24 @@
+<view class="container">
+    <!-- 顶部信息 -->
+    <view class="topInfo">
+        <view class="background">
+            <image class="backgroundImage" src="{{songRankData[0].al.picUrl}}" />
+        </view>
+        <view class="content">
+            <image src="{{songRankData[0].al.picUrl}}" />
+            <view class="dec">
+                <text class="info"></text>
+            </view>
+        </view>
+    </view>
+    <!-- 歌曲 -->
+    <view class="songList">
+        <view class="songItem" wx:for="{{songRankData}}" wx:key="id">
+            <text class="rank">{{index+1}}</text>
+            <view class="songInfo">
+                <text class="songName">{{item.name}}</text>
+                <text class="songArtist">{{item.ar[0].name}} {{item.alia[0]}}</text>
+            </view>
+        </view>
+    </view>
+</view>
