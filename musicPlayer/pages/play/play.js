@@ -2,7 +2,6 @@
 import request from '../../utils/request';
 import pubSub from 'pubsub-js';
 import moment from 'moment';
-let index = 0;
 Page({
     /**
      * 页面的初始数据
@@ -14,12 +13,12 @@ Page({
         musicLink: '',
         musicTotalTime: '00:00',
         currentTime: '00:00',
-        timeNow: 0,
+        timeNow: 0,         //当前歌曲播放时间（秒格式）
         currentLength: 0,
         lineNow: 0,
         lyrics: [],
         scrollIntoView: '',
-        scrollTop:''
+        scrollTop: ''
     },
     /**
      * 生命周期函数--监听页面加载
@@ -39,34 +38,42 @@ Page({
                 isPlay: true
             })
         });
+
+
         this.backgroundAudioManager.onPause(() => {
             this.setData({
                 isPlay: false
             })
         });
+
+
         this.backgroundAudioManager.onStop(() => {
             this.setData({
                 isPlay: false
             })
         });
+
+
         // 监听音乐播放自然结束
         this.backgroundAudioManager.onEnded(() => {
+            // 当前音乐播放结束，将歌词状态回归到初始状态
+            this.setData({
+                lineNow: 0,
+                scrollTop: 0
+            })
             // 自动切换至下一首歌，并自动播放
             pubSub.publish('switchType', 'next');
             pubSub.subscribe('musicId', (msg, musicId) => {
-                // this.setData({
-                //     musicId //更新musicId
-                // })
                 console.log(musicId);
                 console.log(this.data.isPlay)
-                this.getMusicInfo(musicId);
-                this.playMusic(this.data.isPlay, musicId); //播放音乐
+                this.getMusicInfo(musicId);     //获取音乐信息并播放音乐
+                // this.playMusic(musicId); //播放音乐
                 // 取消订阅
                 pubSub.unsubscribe('musicId')
             })
-
-            // 将实时进度条的长度
         })
+
+
         // 监听音乐实时播放的进度
         this.backgroundAudioManager.onTimeUpdate(() => {
             let currentTime = moment(this.backgroundAudioManager.currentTime * 1000).format('mm:ss')  //moment接收的参数是毫秒
@@ -78,18 +85,19 @@ Page({
                 timeNow
             })
 
-            if (timeNow == this.data.lyrics[index].time) {
-                console.log(this.data.lyrics[index].content)
-                this.lineHigh();
-                index += 1;
-                if (index == this.data.lyrics.length) {
-                    index = 0;
-                    this.setData({
-                        lineNow: 0,
-                        scrollTop:0     //当歌曲播放完毕歌词滚回顶部
-                    })
-                }
-            }
+            this.lineHigh(timeNow);
+            // if (timeNow == this.data.lyrics[index].time) {
+            //     console.log(this.data.lyrics[index].content)
+            //     this.lineHigh();
+            //     index += 1;
+            //     if (index == this.data.lyrics.length) {
+            //         index = 0;
+            //         this.setData({
+            //             lineNow: 0,
+            //             scrollTop: 0     //当歌曲播放完毕歌词滚回顶部
+            //         })
+            //     }
+            // }
 
         })
     },
@@ -125,7 +133,6 @@ Page({
         this.setData({
             lyrics
         })
-
         /*- ------------------------------ 获取音乐播放链接-------------------------------*/
         // if (isPlay) {
         let musicLinkData = await request('/song/url', { id: musicId });
@@ -161,21 +168,19 @@ Page({
     handlerSwitch(event) {
         let type = event.currentTarget.id;
         this.backgroundAudioManager.stop();
-        index=0;
         // 订阅来自songDetail页面的musicId
         pubSub.subscribe('musicId', (msg, musicId) => {
             this.setData({
-                musicId //更新musicId   
+                musicId, //更新musicId
+                lineNow: 0,   //歌词回到初始状态  
+                scrollTop: 0    //歌词滚动条回到顶部
             })
             console.log(musicId);
             this.getMusicInfo(musicId); //获取新音乐信息
-            this.setData({
-                scrollTop:0
-            })
-                   //切歌时将index归零，重新遍历歌词
-            // this.playMusic(musicLink); //播放音乐   
-            // this.playMusic(this.data.isPlay, musicId);     在真机上需要设置为this.data.isPlay才能自动播放下一首
-            // this.playMusic(this.data.isPlay, musicId);     在开发工具模拟器上需要设置为！this.data.isPlay才能自动播放下一首
+            // this.setData({
+            //     scrollTop: 0
+
+            // })
 
             // 取消订阅
             pubSub.unsubscribe('musicId')
@@ -184,23 +189,29 @@ Page({
         pubSub.publish('switchType', type)
     },
 
-    // 当前歌词高亮
-    lineHigh() {
-        let lyrics = this.data.lyrics;
-        let lineNow = this.data.lineNow;      //获取歌词
-        if (lineNow > 0) {
-            lyrics[lineNow - 1].cla = '';
-            lyrics[lineNow - 1].id = '';
+    // 当前歌词高亮以及滚动
+    lineHigh(currentTime) {
+        let lyrics = this.data.lyrics;              //获取歌词
+        let lineNow = this.data.lineNow;            //获取当前行
+        if (lineNow < lyrics.length) {
+            console.log(lyrics.length)
+            if (currentTime == lyrics[lineNow].time) {
+                console.log(lyrics[lineNow])
+                if (lineNow > 0) {
+                    lyrics[lineNow - 1].cla = '';   //取消上一行的高亮
+                    lyrics[lineNow - 1].id = '';    //取消上一行的滚动定位
+                }
+                lyrics[lineNow].cla = 'highLight';  //设置当前行高亮
+                lyrics[lineNow].id = 'scrollToCurrent'      //滚动定位到当前行
+                this.setData({
+                    lyrics,
+                    lineNow: lineNow + 1,
+                    scrollIntoView: 'scrollToCurrent'
+                })
+            }
         }
-        lyrics[lineNow].cla = 'highLight';
-        lyrics[lineNow].id = 'scrollToCurrent'
-        // console.log('123',lyrics)
-        this.setData({
-            lyrics,
-            lineNow: lineNow + 1,
-            scrollIntoView: 'scrollToCurrent'
 
-        })
+
     },
 
     /**
