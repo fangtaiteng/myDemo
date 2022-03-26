@@ -76,27 +76,31 @@
     /* background-color: antiquewhite; */
     margin-bottom: 30rpx;
 }
+.progressBar slider{
+    width: 460rpx;
+}
 .progressBar .bar{
     display: flex;
     width: 460rpx;
     height: 10rpx;
     border-radius: 5rpx;
-    background-color: rgba(133, 133, 133, 0.329);
+    background-color: rgba(165, 165, 165, 0.329);
+    /* position: relative; */
 }
 .bar .currentLength{
     /* width: 50%; */
     height: 100%;
     border-radius: 5rpx;
     background-color: rgb(34, 34, 34);
-    position: relative;
+    /* position: relative; */
 }
-.currentLength .smallBall{
+.bar .smallBall{
     height: 20rpx;
     width: 20rpx;
     border-radius: 50%;
     background-color: rgba(184, 86, 86, 0.986);
-    position: absolute;
-    right: -5rpx;
+    /* position: absolute; */
+    /* right: rpx; */
     top: -6rpx;
 }
 

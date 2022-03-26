@@ -17,12 +17,12 @@
     <view class="bottom">
         <view class="progressBar">
             <text class="currentTime">{{currentTime}}</text>
-            <view class="bar">
-                <view class="currentLength" style="width:{{currentLength + 'rpx'}}">
-                    <view class="smallBall"></view>
-                </view>
-            </view>
-            <text class="totalTiem">{{musicTotalTime}}</text>
+            <!-- <movable-area class="bar">
+                <view  class="currentLength" style="width:{{currentLength + 'rpx'}}"></view>
+                <movable-view direction="horizontal" class="smallBall" bindchange="handleDrag" x="{{offset}}"></movable-view>
+            </movable-area> -->
+            <slider background-color="#a5a5a5" active-color="#222222" block-size="20rpx" block-color="#b85656" max="{{musicTotalTime}}" value="{{value}}" bindchange="handleBindchange" bindchanging="handleBindchanging"/>
+            <text class="totalTiem">{{duration}}</text>
         </view>
         <view class="bottom-control">
             <view class="left-option">

@@ -2,6 +2,7 @@
 import request from '../../utils/request';
 import pubSub from 'pubsub-js';
 import moment from 'moment';
+const appInstance = getApp();
 Page({
     /**
      * 页面的初始数据
@@ -11,14 +12,17 @@ Page({
         song: {},
         musicId: '',
         musicLink: '',
-        musicTotalTime: '00:00',
+        musicTotalTime: 0,
+        duration: '00:00',
         currentTime: '00:00',
         timeNow: 0,         //当前歌曲播放时间（秒格式）
-        currentLength: 0,
-        lineNow: 0,
+        lineNow: 0,         //当前播放的歌词
+        linePre: 0,          //上一句播放的歌词
         lyrics: [],
         scrollIntoView: '',
-        scrollTop: ''
+        scrollTop: '',
+        value: 0,       //进度条的位置
+        isSlide: true
     },
     /**
      * 生命周期函数--监听页面加载
@@ -41,8 +45,10 @@ Page({
 
 
         this.backgroundAudioManager.onPause(() => {
+            let offset = this.backgroundAudioManager.currentTime;
             this.setData({
-                isPlay: false
+                isPlay: false,
+                offset
             })
         });
 
@@ -74,41 +80,36 @@ Page({
         })
 
 
+
         // 监听音乐实时播放的进度
         this.backgroundAudioManager.onTimeUpdate(() => {
             let currentTime = moment(this.backgroundAudioManager.currentTime * 1000).format('mm:ss')  //moment接收的参数是毫秒
-            let currentLength = this.backgroundAudioManager.currentTime / this.backgroundAudioManager.duration * 460;
             let timeNow = parseInt(this.backgroundAudioManager.currentTime);
-            this.setData({
-                currentTime,
-                currentLength,
-                timeNow
-            })
-
+            let value = this.backgroundAudioManager.currentTime;
+            // console.log(value)
+            // console.log(this.data.musicTotalTime)
+            if (this.data.isSlide) {
+                this.setData({
+                    currentTime,
+                    timeNow,
+                    value
+                })
+            }
             this.lineHigh(timeNow);
-            // if (timeNow == this.data.lyrics[index].time) {
-            //     console.log(this.data.lyrics[index].content)
-            //     this.lineHigh();
-            //     index += 1;
-            //     if (index == this.data.lyrics.length) {
-            //         index = 0;
-            //         this.setData({
-            //             lineNow: 0,
-            //             scrollTop: 0     //当歌曲播放完毕歌词滚回顶部
-            //         })
-            //     }
-            // }
-
         })
+
     },
 
     // 获取音乐详情，歌词，播放链接
     async getMusicInfo(musicId) {
         /*-------------------------------获取音乐详细信息---------------------------------------*/
         let getSongDetail = await request('/song/detail', { ids: musicId });
-        let musicTotalTime = moment(getSongDetail.songs[0].dt).format('mm:ss')  //获取音乐时长并调整格式
+        let duration = moment(getSongDetail.songs[0].dt).format('mm:ss');  //获取音乐时长并调整格式
+        let musicTotalTime = getSongDetail.songs[0].dt / 1000;
+        // let musicTotalTime = getSongDetail.songs[0].dt;
         this.setData({
             song: getSongDetail.songs[0],
+            duration,
             musicTotalTime
         });
         /*-------------------------------获取歌词----------------------------------------*/
@@ -134,7 +135,6 @@ Page({
             lyrics
         })
         /*- ------------------------------ 获取音乐播放链接-------------------------------*/
-        // if (isPlay) {
         let musicLinkData = await request('/song/url', { id: musicId });
         let musicLink = musicLinkData.data[0].url;
         this.setData({
@@ -173,15 +173,13 @@ Page({
             this.setData({
                 musicId, //更新musicId
                 lineNow: 0,   //歌词回到初始状态  
-                scrollTop: 0    //歌词滚动条回到顶部
+                scrollTop: 0,   //歌词滚动条回到顶部
+                value: 0,    //进度条归零
+                currentTime: '00:00' //播放时间归零
+
             })
             console.log(musicId);
             this.getMusicInfo(musicId); //获取新音乐信息
-            // this.setData({
-            //     scrollTop: 0
-
-            // })
-
             // 取消订阅
             pubSub.unsubscribe('musicId')
         })
@@ -194,9 +192,9 @@ Page({
         let lyrics = this.data.lyrics;              //获取歌词
         let lineNow = this.data.lineNow;            //获取当前行
         if (lineNow < lyrics.length) {
-            console.log(lyrics.length)
             if (currentTime == lyrics[lineNow].time) {
                 console.log(lyrics[lineNow])
+
                 if (lineNow > 0) {
                     lyrics[lineNow - 1].cla = '';   //取消上一行的高亮
                     lyrics[lineNow - 1].id = '';    //取消上一行的滚动定位
@@ -210,9 +208,63 @@ Page({
                 })
             }
         }
+    },
 
+
+    //完成一次拖动进度条后触发的事件
+    handleBindchange(event) {
+        //滑动进度条去抖动
+        setTimeout(() => {
+            this.setData({
+                isSlide: true,
+            })
+        }, 300)
+
+
+        // this.setData({
+        //     lyrics
+        // })
+        this.backgroundAudioManager.seek(event.detail.value)    //歌曲跳转到指定位置
+        console.log(event.detail.value)
+        for (let i = 0; i < this.data.lyrics.length; i++) {
+            if (event.detail.value <= this.data.lyrics[i].time) {
+                let linePre = this.data.linePre;
+                let lyrics = this.data.lyrics;
+                lyrics[linePre].cla = '';
+                lyrics[linePre].id = '';
+                this.setData({
+                    lineNow: i,
+                    lyrics
+                })
+
+                return;
+            }
+            // console.log("hhhhhhhhhhhhhhhhh", this.data.linePre);
+            // console.log('1111111111111111', this.data.lineNow);
+
+        }
 
     },
+    //拖动进度条过程中触发的事件
+    handleBindchanging(event) {
+        let currentTime = moment(event.detail.value * 1000).format('mm:ss');
+        // let linePre = this.data.linePre;
+        let lineNow = this.data.lineNow;
+        this.lineHigh(currentTime);
+        this.setData({
+            isSlide: false,     //暂停监听歌曲播放状态（去除拖动进度条时的抖动）
+            currentTime,
+            value: event.detail.value,
+            linePre: lineNow
+        })
+
+
+
+
+
+        // console.log(this.data.isSlide)
+    },
+
 
     /**
      * 生命周期函数--监听页面初次渲染完成
