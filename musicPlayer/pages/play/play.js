@@ -2,6 +2,8 @@
 import request from '../../utils/request';
 import pubSub from 'pubsub-js';
 import moment from 'moment';
+let appInst = getApp().globalData
+
 Page({
     /**
      * 页面的初始数据
@@ -18,7 +20,7 @@ Page({
         lyrics: [],             //歌词
         scrollIntoView: '',     //滚动到指定位置
         scrollTop: 0,           //滚动条位置
-        value: 0,               //进度条的位置
+        value: 0,               //进度条的位置（当滑动进度条时等于进度条的value，当正常播放时为当前播放时间的秒格式）
         isSlide: true,          //是否滑动了进度条
         index: 0                //当前歌词下标
     },
@@ -30,6 +32,13 @@ Page({
         this.setData({
             musicId
         })
+
+        if(this.data.musicId==appInst.musicId){
+            this.setData({
+                index:appInst.index
+            })
+        }
+
         // 创建控制音乐播放的实例
         this.backgroundAudioManager = wx.getBackgroundAudioManager();   //定义到页面上，解决作用域问题
         this.getMusicInfo(this.data.musicId); //获取音乐信息
@@ -80,22 +89,23 @@ Page({
         // 监听音乐实时播放的进度
         this.backgroundAudioManager.onTimeUpdate(() => {
             let currentTime = moment(this.backgroundAudioManager.currentTime * 1000).format('mm:ss')  //moment接收的参数是毫秒
-            let timeNow = parseInt(this.backgroundAudioManager.currentTime);
+            // let timeNow = parseInt(this.backgroundAudioManager.currentTime);
             let value = this.backgroundAudioManager.currentTime;
             if (this.data.isSlide) {
                 this.setData({
                     currentTime,
-                    timeNow,
+                    // timeNow,
                     value
                 })
             }
             this.scrollLyrics();    //监听歌词状态
+            // console.log(appInst)
         })
 
     },
 
-/************************************************获取音乐详情，歌词，播放链接*********************************************************************************/
-   
+    /************************************************获取音乐详情，歌词，播放链接*********************************************************************************/
+
     async getMusicInfo(musicId) {
         /*-------------------------------获取音乐详细信息---------------------------------------*/
         let getSongDetail = await request('/song/detail', { ids: musicId });
@@ -140,7 +150,7 @@ Page({
     },
 
     /********************************************************播放音乐功能***************************************************/
-    
+
     playMusic(musicLink) {
         this.backgroundAudioManager.src = musicLink;
         this.backgroundAudioManager.title = this.data.song.name;
@@ -169,22 +179,28 @@ Page({
             this.setData({
                 musicId, //更新musicId 
                 index: 0,   //歌词回到初始状态  
-                scrollTop: 0,   //歌词滚动条回到顶部
+
                 value: 0,    //进度条归零
                 currentTime: '00:00', //播放时间归零
-                scrollIntoView: 'scrollToCurrent'
+                scrollIntoView: ''
             })
             // console.log(musicId);
             this.getMusicInfo(musicId); //获取新音乐信息
+            setTimeout(() => {
+                this.setData({
+                    scrollTop: 0,   //歌词滚动条回到顶部
+                })
+            },500)
+
             // 取消订阅
             pubSub.unsubscribe('musicId')
         })
         // 发送数据给songDetail页面
         pubSub.publish('switchType', type)
     },
-/******************************************************进度条拖动功能*********************************************************/
-   
-/*-------------------------------------滑动停止时的回调函数---------------------------------------------*/
+    /******************************************************进度条拖动功能*********************************************************/
+
+    /*-------------------------------------滑动停止时的回调函数---------------------------------------------*/
     handleBindchange(event) {
         //滑动进度条去抖动
         setTimeout(() => {
@@ -198,7 +214,7 @@ Page({
         // console.log(this.data.lyrics)
     },
 
-/*------------------------------------滑动时触发的回调函数------------------------------------------------ */
+    /*------------------------------------滑动时触发的回调函数------------------------------------------------ */
     //拖动进度条过程中触发的事件
     handleBindchanging(event) {
         let value = event.detail.value;
@@ -230,8 +246,9 @@ Page({
 
     //******************************************* 滚动歌词功能函数**************************************************
     scrollLyrics() {
-        let index = this.data.index;                    
-        if (index < this.data.lyrics.length - 1) {          
+        let index = this.data.index;
+        appInst.index = index;                    
+        if (index < this.data.lyrics.length - 1) {
             if (this.data.lyrics[index].time == 0) {
                 this.setData({
                     index: index + 1
@@ -246,12 +263,14 @@ Page({
                     lyrics[index - 1].id = ''
                 }
                 console.log(this.data.lyrics[index])
+
                 this.setData({
                     lyrics,
                     scrollIntoView: 'scrollToCurrent',      //每到一句歌词就需要动态更新scrollIntoView的值，歌词才会自动滚动到当前位置
                     index: index + 1
                 })
 
+                // console.log('1234')
             }
         }
     },
@@ -281,7 +300,7 @@ Page({
      * 生命周期函数--监听页面卸载
      */
     onUnload: function () {
-
+           appInst.musicId = this.data.musicId;
     },
 
     /**

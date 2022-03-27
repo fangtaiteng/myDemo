@@ -1,8 +1,8 @@
 App({
 
   globalData:{
-      screenWidth:0,
-      switchPxRpx:0
+    musicId:'',
+    index:0
   },
 
   /**
@@ -10,12 +10,6 @@ App({
    */
   onLaunch: function () {
     
-    wx.getSystemInfo({
-      success: (result)=>{
-        this.screenWidth = result.screenWidth;
-        this.switchPxRpx = 750/result.screenWidth;
-      },
-    });
 
 
   },

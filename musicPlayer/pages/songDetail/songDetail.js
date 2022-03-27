@@ -7,7 +7,7 @@ Page({
      */
     data: {
         SongDetailData: {},
-        index:0
+        index: 0
     },
 
     /**
@@ -41,15 +41,15 @@ Page({
         }
 
         //订阅来自play页面发布的消息
-        pubSub.subscribe('switchType',(msg,type)=>{
+        pubSub.subscribe('switchType', (msg, type) => {
             let songList = this.data.SongDetailData;
             let index = this.data.index;
-            if(type==='pre'){
+            if (type === 'pre') {
                 (index === 0) && (index = songList.length);
-                index -=1;
-            }else if(type==='next'){
-                (index ===songList.length-1) && (index = -1)
-                index +=1;
+                index -= 1;
+            } else if (type === 'next') {
+                (index === songList.length - 1) && (index = -1)
+                index += 1;
             }
             // 更新下标
             this.setData({
@@ -57,7 +57,7 @@ Page({
             })
             let musicId = songList[index].id;
             // 将musicId回传给play页面
-            pubSub.publish('musicId',musicId)
+            pubSub.publish('musicId', musicId)
         })
     },
 
