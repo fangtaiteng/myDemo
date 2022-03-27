@@ -2,27 +2,25 @@
 import request from '../../utils/request';
 import pubSub from 'pubsub-js';
 import moment from 'moment';
-const appInstance = getApp();
 Page({
     /**
      * 页面的初始数据
      */
     data: {
-        isPlay: true,
-        song: {},
-        musicId: '',
-        musicLink: '',
-        musicTotalTime: 0,
-        duration: '00:00',
-        currentTime: '00:00',
-        timeNow: 0,         //当前歌曲播放时间（秒格式）
-        lineNow: 0,         //当前播放的歌词
-        linePre: 0,          //上一句播放的歌词
-        lyrics: [],
-        scrollIntoView: '',
-        scrollTop: '',
-        value: 0,       //进度条的位置
-        isSlide: true
+        isPlay: true,           //是否在播放音乐标识
+        song: {},               //音乐信息
+        musicId: '',            //音乐id
+        musicLink: '',          //音乐播放链接
+        musicTotalTime: 0,      //歌曲时长秒格式
+        duration: '00:00',      //歌曲时长
+        currentTime: '00:00',   //当前时间（进度条左边的时间）
+        timeNow: 0,             //当前歌曲播放时间（秒格式）
+        lyrics: [],             //歌词
+        scrollIntoView: '',     //滚动到指定位置
+        scrollTop: 0,           //滚动条位置
+        value: 0,               //进度条的位置
+        isSlide: true,          //是否滑动了进度条
+        index: 0                //当前歌词下标
     },
     /**
      * 生命周期函数--监听页面加载
@@ -39,8 +37,9 @@ Page({
         this.backgroundAudioManager.onPlay(() => {
             // 修改音乐是否播放的状态
             this.setData({
-                isPlay: true
+                isPlay: true,
             })
+
         });
 
 
@@ -64,7 +63,7 @@ Page({
         this.backgroundAudioManager.onEnded(() => {
             // 当前音乐播放结束，将歌词状态回归到初始状态
             this.setData({
-                lineNow: 0,
+                index: 0,
                 scrollTop: 0
             })
             // 自动切换至下一首歌，并自动播放
@@ -73,21 +72,16 @@ Page({
                 console.log(musicId);
                 console.log(this.data.isPlay)
                 this.getMusicInfo(musicId);     //获取音乐信息并播放音乐
-                // this.playMusic(musicId); //播放音乐
                 // 取消订阅
                 pubSub.unsubscribe('musicId')
             })
         })
-
-
 
         // 监听音乐实时播放的进度
         this.backgroundAudioManager.onTimeUpdate(() => {
             let currentTime = moment(this.backgroundAudioManager.currentTime * 1000).format('mm:ss')  //moment接收的参数是毫秒
             let timeNow = parseInt(this.backgroundAudioManager.currentTime);
             let value = this.backgroundAudioManager.currentTime;
-            // console.log(value)
-            // console.log(this.data.musicTotalTime)
             if (this.data.isSlide) {
                 this.setData({
                     currentTime,
@@ -95,12 +89,13 @@ Page({
                     value
                 })
             }
-            this.lineHigh(timeNow);
+            this.scrollLyrics();    //监听歌词状态
         })
 
     },
 
-    // 获取音乐详情，歌词，播放链接
+/************************************************获取音乐详情，歌词，播放链接*********************************************************************************/
+   
     async getMusicInfo(musicId) {
         /*-------------------------------获取音乐详细信息---------------------------------------*/
         let getSongDetail = await request('/song/detail', { ids: musicId });
@@ -131,6 +126,7 @@ Page({
                 lyrics.push({ 'time': arr[0], 'content': arr[1] })
             }
         });
+        lyrics.push({ 'time': this.data.musicTotalTime })  //在歌词最后面添加一个对象，适配歌词歌词滚动
         this.setData({
             lyrics
         })
@@ -143,14 +139,14 @@ Page({
         this.playMusic(musicLink); //播放音乐
     },
 
-    // 播放音乐功能
+    /********************************************************播放音乐功能***************************************************/
+    
     playMusic(musicLink) {
         this.backgroundAudioManager.src = musicLink;
         this.backgroundAudioManager.title = this.data.song.name;
     },
 
-
-    // 点击播放/暂停的回调
+    /*******************************************************点击播放/暂停功能***********************************************/
     playOrStop() {
         let isPlay = this.data.isPlay;
         if (isPlay == false) {
@@ -161,24 +157,24 @@ Page({
         } else {
             this.backgroundAudioManager.pause();
         }
-        console.log(isPlay)
+        // console.log(isPlay)
     },
 
-    //切歌的回调函数
+    /********************************************************切歌功能****************************************************/
     handlerSwitch(event) {
         let type = event.currentTarget.id;
         this.backgroundAudioManager.stop();
         // 订阅来自songDetail页面的musicId
         pubSub.subscribe('musicId', (msg, musicId) => {
             this.setData({
-                musicId, //更新musicId
-                lineNow: 0,   //歌词回到初始状态  
+                musicId, //更新musicId 
+                index: 0,   //歌词回到初始状态  
                 scrollTop: 0,   //歌词滚动条回到顶部
                 value: 0,    //进度条归零
-                currentTime: '00:00' //播放时间归零
-
+                currentTime: '00:00', //播放时间归零
+                scrollIntoView: 'scrollToCurrent'
             })
-            console.log(musicId);
+            // console.log(musicId);
             this.getMusicInfo(musicId); //获取新音乐信息
             // 取消订阅
             pubSub.unsubscribe('musicId')
@@ -186,85 +182,79 @@ Page({
         // 发送数据给songDetail页面
         pubSub.publish('switchType', type)
     },
-
-    // 当前歌词高亮以及滚动
-    lineHigh(currentTime) {
-        let lyrics = this.data.lyrics;              //获取歌词
-        let lineNow = this.data.lineNow;            //获取当前行
-        if (lineNow < lyrics.length) {
-            if (currentTime == lyrics[lineNow].time) {
-                console.log(lyrics[lineNow])
-
-                if (lineNow > 0) {
-                    lyrics[lineNow - 1].cla = '';   //取消上一行的高亮
-                    lyrics[lineNow - 1].id = '';    //取消上一行的滚动定位
-                }
-                lyrics[lineNow].cla = 'highLight';  //设置当前行高亮
-                lyrics[lineNow].id = 'scrollToCurrent'      //滚动定位到当前行
-                this.setData({
-                    lyrics,
-                    lineNow: lineNow + 1,
-                    scrollIntoView: 'scrollToCurrent'
-                })
-            }
-        }
-    },
-
-
-    //完成一次拖动进度条后触发的事件
+/******************************************************进度条拖动功能*********************************************************/
+   
+/*-------------------------------------滑动停止时的回调函数---------------------------------------------*/
     handleBindchange(event) {
         //滑动进度条去抖动
         setTimeout(() => {
             this.setData({
                 isSlide: true,
+                scrollIntoView: 'scrollToCurrent'   //更新scrollIntoView的值
             })
         }, 300)
-
-
-        // this.setData({
-        //     lyrics
-        // })
         this.backgroundAudioManager.seek(event.detail.value)    //歌曲跳转到指定位置
-        console.log(event.detail.value)
-        for (let i = 0; i < this.data.lyrics.length; i++) {
-            if (event.detail.value <= this.data.lyrics[i].time) {
-                let linePre = this.data.linePre;
-                let lyrics = this.data.lyrics;
-                lyrics[linePre].cla = '';
-                lyrics[linePre].id = '';
-                this.setData({
-                    lineNow: i,
-                    lyrics
-                })
-
-                return;
-            }
-            // console.log("hhhhhhhhhhhhhhhhh", this.data.linePre);
-            // console.log('1111111111111111', this.data.lineNow);
-
-        }
-
+        // console.log(event.detail.value)
+        // console.log(this.data.lyrics)
     },
+
+/*------------------------------------滑动时触发的回调函数------------------------------------------------ */
     //拖动进度条过程中触发的事件
     handleBindchanging(event) {
-        let currentTime = moment(event.detail.value * 1000).format('mm:ss');
-        // let linePre = this.data.linePre;
-        let lineNow = this.data.lineNow;
-        this.lineHigh(currentTime);
+        let value = event.detail.value;
+        let currentTime = moment(value * 1000).format('mm:ss');
+        let lyrics = this.data.lyrics;
+        // 拖动时遍历歌词的每一项，先将所有歌词的样式去除
+        for (let i = 0; i < lyrics.length; i++) {
+            lyrics[i].cla = '';
+            lyrics[i].id = '';
+            if (i < lyrics.length - 1) {
+                // 判断当前的时间在哪两段歌词之间
+                if (value >= lyrics[i].time && value <= lyrics[i + 1].time) {
+                    this.setData({
+                        index: i        //更新歌词下表
+                    })
+                }
+            }
+        }
         this.setData({
             isSlide: false,     //暂停监听歌曲播放状态（去除拖动进度条时的抖动）
             currentTime,
-            value: event.detail.value,
-            linePre: lineNow
+            value,
+            lyrics,
+            scrollIntoView: 'scrollToCurrent'
         })
 
-
-
-
-
-        // console.log(this.data.isSlide)
     },
 
+
+    //******************************************* 滚动歌词功能函数**************************************************
+    scrollLyrics() {
+        let index = this.data.index;                    
+        if (index < this.data.lyrics.length - 1) {          
+            if (this.data.lyrics[index].time == 0) {
+                this.setData({
+                    index: index + 1
+                })
+            }
+            if (this.data.value >= this.data.lyrics[index].time && this.data.value <= this.data.lyrics[index + 1].time) {
+                let lyrics = this.data.lyrics;
+                lyrics[index].cla = 'highLight';        //为当前歌词添加cla属性，让当前歌词变色
+                lyrics[index].id = 'scrollToCurrent';   //为当前歌词添加id属性，让歌词自动滚动到当前歌词
+                if (index > 0) {
+                    lyrics[index - 1].cla = ''             //取消上一句歌词样式
+                    lyrics[index - 1].id = ''
+                }
+                console.log(this.data.lyrics[index])
+                this.setData({
+                    lyrics,
+                    scrollIntoView: 'scrollToCurrent',      //每到一句歌词就需要动态更新scrollIntoView的值，歌词才会自动滚动到当前位置
+                    index: index + 1
+                })
+
+            }
+        }
+    },
 
     /**
      * 生命周期函数--监听页面初次渲染完成

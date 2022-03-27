@@ -55,7 +55,7 @@
 }
 .highLight{
     color: rgba(184, 86, 86, 0.986);
-    font-size: 40rpx;
+    /* font-size: 40rpx; */
     /* max-width: 550rpx; */
 }
 /* 底部控制 */
