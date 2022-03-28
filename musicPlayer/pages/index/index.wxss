@@ -1,6 +1,6 @@
 /* pages/index/index.wxss */
 .indexContainer{
-    background-color: rgba(226, 226, 226, 0.507);
+    background-color: #F1F3F5;
 }
 .banners{
     width: 100%;

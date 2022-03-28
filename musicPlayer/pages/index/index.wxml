@@ -29,7 +29,7 @@
     <view class="recommendContainer">
         <NavHeader title="推荐歌单" data-url="/personalized" bindtap="toSongListAll"></NavHeader>
         <!-- 内容区 -->
-        <scroll-view class="recommenScroll" enable-flex="ture" scroll-x="true">
+        <scroll-view class="recommenScroll" enable-flex="true" scroll-x="true">
             <view class="scrollItem" wx:for="{{recommendList}}" wx:key="id" data-send="{{item.id}}" bindtap="toSongDetail">
                 <image src="{{item.picUrl}}"></image>
                 <text>{{item.name}}</text>
