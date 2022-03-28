@@ -17,7 +17,7 @@
     "style": "v2",
     "sitemapLocation": "sitemap.json",
     "window": {
-        "navigationBarBackgroundColor": "#ffffff",
+        "navigationBarBackgroundColor": "#F1F3F5",
         "navigationBarTextStyle": "black"
     },
     "tabBar": {
