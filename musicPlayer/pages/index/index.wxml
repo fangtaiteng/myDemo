@@ -39,7 +39,7 @@
     <!-- 排行榜区域 -->
     <view class="topList">
         <!-- 头部区域 -->
-        <NavHeader title="排行榜"></NavHeader>
+        <NavHeader class="navHeader" title="排行榜"></NavHeader>
         <!-- 内容区域 -->
         <view class="topListContainer">
             <view wx:for="{{topList}}" wx:key="name" data-listid="{{item.id}}" bindtap="toRankDetail" >
