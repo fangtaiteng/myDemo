@@ -1,40 +1,113 @@
 /* 搜索框部分 */
+.searchContainer{
+    padding: 0 20rpx;
+    background-color: #F1F3F5;
+    height: 100%;
+}
 .search{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 30rpx 0;
+    /* background-color: antiquewhite; */
+    /* padding: 0 40rpx; */
+    position: relative;
 }
-.search input{
-    box-sizing: border-box;
-    width: 550rpx;
-    height: 80rpx;
-    background-color: rgb(238, 238, 238);
-    padding: 5rpx 40rpx;
-    border-radius: 50rpx;
-    margin-right: 10rpx;
-}
-.search .searchBtn{
-    font-size: 28rpx;
-    background-color: #E25252;
-    text-align: center;
-    line-height: 70rpx;
-    color: white;
+.search .searchInput{
+    background-color: #ffffff;
     border-radius: 40rpx;
-    height: 70rpx;
-    width: 120rpx;
+    height: 80rpx;
+    line-height: 80rpx;
+    padding-left: 40rpx;
+    padding-right: 100rpx;
+}
+.search .iconfont{
+    font-size: 50rpx;
+    position: absolute;
+    right: 30rpx;
+    top: 20rpx;
+    color: #8c8c8c;
+}
+/* 搜索建议内容 */
+.searchContent{
+    background-color: #ffffff;
+    padding: 20rpx;
+    margin-top: 20rpx;
+    border-radius: 30rpx;
+}
+.searchContainer .searchItem{
+    display: flex;
+    align-items: center;
+}
+.searchItem .iconfont{
+    color: #8c8c8c;
+    margin-right: 20rpx;
+    font-size: 40rpx;
+}
+.searchItem .itemContent{
+    width: 100%;
+    padding: 20rpx;
+    border-bottom: #a1a1a1 1rpx solid;
+    height: 60rpx;
+    line-height: 60rpx;
+}
+/* 历史记录 */
+.history{
+    background-color: #ffffff;
+    border-radius: 30rpx;
+    padding: 20rpx;
+    margin-top: 20rpx;
+}
+.history .header{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20rpx;
+}
+.header .clear{
+    color: rgba(184, 86, 86, 0.986);
+}
+.historyList{
+    display: flex;
+    flex-wrap: wrap;
+    height: 130rpx;
+    overflow: auto;
+}
+.historyItem{
+    margin-right: 20rpx;
+    background-color: #E9EBED;
+    padding: 10rpx 26rpx;
+    font-size: 26rpx;
+    height: 40rpx;
+    line-height: 40rpx;
+    margin-bottom: 10rpx;
+    border-radius: 20rpx;
+    border-radius: 36rpx;
 }
 
 /* 热搜榜部分 */
-.title{
-    text-align: center;
+.hotSearch{
+    margin-top: 20rpx ;
+    padding: 20rpx;
+    background-color: #ffffff;
+    border-radius: 30rpx;
 }
-
-.hot-search-list{
-    line-height: 100rpx;
-    padding: 30rpx;
+.songList{
+    display: flex;
+    flex-wrap: wrap;
 }
-.hot-search-item .num{
-    margin-right: 50rpx;
-    font-size: 36rpx;
+.songItem{
+    margin-top: 20rpx;
+    width: 48%;
+    height: 60rpx;
+    line-height: 60rpx;
+    margin-right: 2%;
+    margin-bottom: 20rpx;
+    position: relative;
+}
+.songItem .name{
+    margin-left: 30rpx;
+    font-size: 26rpx;
+}
+.songItem image{
+    height: 26rpx;
+    width: 40rpx;
+    position: absolute;
+    right: 0rpx;
+    top: 17rpx;
 }

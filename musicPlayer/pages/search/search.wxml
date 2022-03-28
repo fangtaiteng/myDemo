@@ -1,46 +1,49 @@
 <view class="searchContainer">
     <!-- 搜索框部分 -->
     <view class="search">
-        <input type="text" />
-        <view class="searchBtn">搜索</view>
+        <input class="searchInput" type="text" placeholder="{{defaultKeyword}}" bindinput="hanleInputChange" value="{{inputValue}}" />
+        <text wx:if="{{inputContent.length}}" class="iconfont icon-runtongyiyaoyihuifu_chacha-29" bindtap="clearInput"></text>
     </view>
-    <!-- 热搜榜 -->
-    <view class="hot-search">
-        <view class="title">热搜榜</view>
-        <view class="hot-search-list">
-            <view class="hot-search-item">
-                <text class="num">1</text>
-                <text class="name">爱呀爱呀</text>
+    <!-- 搜索建议内容 -->
+    <block wx:if="{{inputContent.length}}">
+        <view class="searchContent">
+            <view class="searchItem" wx:for="{{searchList}}" wx:key="id">
+                <text class="iconfont icon-sousuo"></text>
+                <text class="itemContent">{{item.name}}</text>
             </view>
-            <view class="hot-search-item">
-                <text class="num">1</text>
-                <text class="name">爱呀爱呀</text>
-            </view>
-            <view class="hot-search-item">
-                <text class="num">1</text>
-                <text class="name">爱呀爱呀</text>
-            </view>
-            <view class="hot-search-item">
-                <text class="num">1</text>
-                <text class="name">爱呀爱呀</text>
-            </view>
-            <view class="hot-search-item">
-                <text class="num">1</text>
-                <text class="name">爱呀爱呀</text>
-            </view>
-            <view class="hot-search-item">
-                <text class="num">1</text>
-                <text class="name">爱呀爱呀</text>
-            </view>
-            <view class="hot-search-item">
-                <text class="num">1</text>
-                <text class="name">爱呀爱呀</text>
-            </view>
-            <view class="hot-search-item">
-                <text class="num">1</text>
-                <text class="name">爱呀爱呀</text>
-            </view>
-            
+        </view>
+    </block>
+
+    <!-- 历史记录 -->
+    <block wx:else>
+        <view class="history">
+        <view class="header">
+            <text class="searchHistory">搜索历史</text>
+            <text class="clear">清空</text>
+        </view>
+        <view class="historyList">
+            <text class="historyItem">好心分手</text>
+            <text class="historyItem">好心</text>
+            <text class="historyItem">好心分手</text>
+            <text class="historyItem">好心分手</text>
+            <text class="historyItem">好心分手</text>
+            <text class="historyItem">好心分手</text>
+            <text class="historyItem">好心分手</text>
+            <text class="historyItem">好心分手</text>
+            <text class="historyItem">好心分手</text>
         </view>
     </view>
+    <!-- 热搜榜 -->
+    <view class="hotSearch">
+        <text class="title">热搜榜</text>
+        <view class="songList">
+            <view class="songItem" wx:for="{{hotSearchList}}" wx:key="score">
+                <text class="rank">{{index+1}}</text>
+                <text class="name">{{item.searchWord}}</text>
+                <image wx:if="{{item.iconUrl}}" src="{{item.iconUrl}}" />
+            </view>
+        </view>
+    </view>
+    </block>
+    
 </view>
