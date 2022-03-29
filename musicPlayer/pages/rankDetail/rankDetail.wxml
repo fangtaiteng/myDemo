@@ -13,7 +13,7 @@
     </view>
     <!-- 歌曲 -->
     <view class="songList">
-        <view class="songItem" wx:for="{{songRankData}}" wx:key="id">
+        <view class="songItem" wx:for="{{songRankData}}" wx:key="id" bindtap="toPlay" data-musicid="{{item.id}}" data-index="{{index}}">
             <text class="rank">{{index+1}}</text>
             <view class="songInfo">
                 <text class="songName">{{item.name}}</text>

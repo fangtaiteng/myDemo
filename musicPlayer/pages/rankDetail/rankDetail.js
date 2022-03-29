@@ -1,5 +1,7 @@
 // pages/rankDetail/rankDetail.js
-import request from '../../utils/request'
+import request from '../../utils/request';
+import pubSub from 'pubsub-js';
+let index = 0;
 Page({
     /**
      * 页面的初始数据
@@ -17,6 +19,21 @@ Page({
         let listId = options.listId;
         this.getToday();
         this.getRankListData(listId);
+        //订阅来自play页面发布的消息
+        pubSub.subscribe('switchType', (msg, type) => {
+            let songRankData = this.data.songRankData;
+            // 更新下标
+            if (type === 'pre') {
+                (index === 0) && (index = songRankData.length);
+                index -= 1;
+            } else if (type === 'next') {
+                (index === songRankData.length - 1) && (index = -1)
+                index += 1;
+            }
+            let musicId = songRankData[index].id;
+            // 将musicId回传给play页面
+            pubSub.publish('musicId', musicId)
+        })
     },
 
 
@@ -34,7 +51,19 @@ Page({
         let result = await request('/playlist/track/all', { id: listId, limit: 100 })
         console.log(result)
         this.setData({
-            songRankData:result.songs
+            songRankData: result.songs
+        })
+    },
+    // 跳转至播放页面
+    toPlay(event) {
+        let musicId = event.currentTarget.dataset.musicid;
+        let index = event.currentTarget.dataset.index;    //拿到通过点击传到事件对象里的数据
+        this.setData({
+            index
+        })
+        // 路由跳转传参:query参数 
+        wx.navigateTo({
+            url: "/pages/play/play?musicId=" + musicId
         })
     },
 
