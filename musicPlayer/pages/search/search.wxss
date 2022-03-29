@@ -65,7 +65,7 @@
 .historyList{
     display: flex;
     flex-wrap: wrap;
-    height: 130rpx;
+    max-height: 130rpx;
     overflow: auto;
 }
 .historyItem{
@@ -100,14 +100,38 @@
     margin-bottom: 20rpx;
     position: relative;
 }
+.songItem .top3{
+    color: rgb(216, 42, 42);
+}
 .songItem .name{
     margin-left: 30rpx;
     font-size: 26rpx;
 }
 .songItem image{
-    height: 26rpx;
-    width: 40rpx;
+    height: 20rpx;
+    width: 20rpx;
     position: absolute;
     right: 0rpx;
     top: 17rpx;
+}
+
+/* 搜索结果界面 */
+.result{
+    margin-top: 20rpx;
+    padding: 20rpx;
+    background-color: #ffffff;
+    border-radius: 30rpx;
+}
+.resultItem{
+    height: 120rpx;
+    box-sizing: border-box;
+    padding:20rpx;
+    border-bottom: #8c8c8c 1rpx solid;
+    color: rgba(184, 86, 86, 0.986);
+}
+.songName{
+    margin-bottom: 20rpx;
+}
+.detail{
+    font-size: 24rpx;
 }

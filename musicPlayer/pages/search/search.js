@@ -1,17 +1,23 @@
 // pages/search/search.js
 import request from "../../utils/request";
-let isSend = false;             //节流防抖用
+import pubSub from 'pubsub-js';
+let isSend = false;             //节流防抖用 
+let index = 0;
 Page({
 
     /**
      * 页面的初始数据
      */
     data: {
-        defaultKeyword: '',         //搜索框默认值
-        hotSearchList: [],           //热搜列表
+        defaultKeyword: '',           //搜索框默认值
+        hotSearchList: [],            //热搜列表
         inputContent: '',             //搜索框内容
-        searchList: [],                 //搜索结果数据
-        inputValue:''                   //搜索框的值
+        searchList: [],               //搜索结果数据
+        searchSuggestList: [],
+        inputValue: '',                //搜索框的值
+        historyArr: [],               //搜索历史
+
+
     },
 
     /**
@@ -19,8 +25,24 @@ Page({
      */
     onLoad: function (options) {
         //初始化页面数据
-        this.getDefaultKeyword();
-        this.getHotSearchList();
+        this.getDefaultKeyword();       //加载搜索框默认关键词
+        this.getHotSearchList();        //加载热搜列表
+        this.getLocalHistory();         //加载搜索历史记录
+        //订阅来自play页面发布的消息
+        pubSub.subscribe('switchType', (msg, type) => {
+            let searchList = this.data.searchList;
+            // 更新下标
+            if (type === 'pre') {
+                (index === 0) && (index = searchList.length);
+                index -= 1;
+            } else if (type === 'next') {
+                (index === searchList.length - 1) && (index = -1)
+                index += 1;
+            }
+            let musicId = searchList[index].id;
+            // 将musicId回传给play页面
+            pubSub.publish('musicId', musicId)
+        })
     },
 
     // 获取搜索框默认关键词
@@ -49,39 +71,112 @@ Page({
             return
         }
         isSend = true;
-        this.getSearchList();
+        this.getSearchSuggestList();
         // 函数节流
         setTimeout(async () => {
             isSend = false;
         }, 300);
         // if (this.inputContent == '') {
-           
+
         // }
+
+    },
+
+    // 获取搜索建议
+    async getSearchSuggestList() {
+        if (this.data.inputContent!='') {
+            let searchSuggestList = await request('/search/suggest', { keywords: this.data.inputContent, type: 'mobile' });
+            this.setData({
+                searchSuggestList: searchSuggestList.result.allMatch
+            })
+        }
 
     },
 
     // 获取搜索数据的功能函数
     async getSearchList() {
-        if (this.data.inputContent != '') {
-            let searchList = await request('/search', { keywords: this.data.inputContent, limit: 10 });
+        let searchList = await request('/cloudsearch', { keywords: this.data.inputContent });
+        this.setData({
+            searchList: searchList.result.songs
+        })
+    },
+
+    // 清空搜索框函数
+    clearInput() {
+        this.setData({
+            inputContent: '',
+            inputValue: '',
+            searchList: []
+        })
+        console.log('123')
+    },
+
+    // 将历史记录存入本地
+    setLocalHistory() {
+        if (this.data.inputContent !== '') {
+            // 将搜索历史记录存入本地
+            let historyItem = this.data.inputContent;
+            let historyArr = this.data.historyArr;
+            if (historyArr.indexOf(historyItem) !== -1) {
+                historyArr.splice(historyArr.indexOf(historyItem), 1)
+            }
+            historyArr.unshift(historyItem)
+            wx.setStorageSync('searchHistory', historyArr);
+            this.getLocalHistory();
+        }
+
+    },
+
+    // 获取本地历史记录
+    getLocalHistory() {
+        let localHistory = wx.getStorageSync('searchHistory');
+        if (localHistory.length !== 0) {
             this.setData({
-                searchList: searchList.result.songs
-            })
-        }else{
-             this.setData({
-                searchList: []
+                historyArr: localHistory
             })
         }
     },
 
-    // 清空搜索框函数
-    clearInput(){
+    // 清除历史记录
+    clearHistory() {
+        wx.setStorageSync('searchHistory', []);
         this.setData({
-            inputContent:'',
-            inputValue:'',
-            searchList:[]
+            historyArr: []
         })
-        console.log('123')
+    },
+
+    // 焦点在input框中时清除搜索的结果
+    handleFocus() {
+        this.setData({
+            searchList: []
+        })
+
+    },
+    // 点击历史记录或者热搜列表进行搜索
+    tapToSearch(event) {
+        let keyword = event.currentTarget.dataset.keyword;
+        this.setData({
+            inputContent: keyword,
+            inputValue: keyword
+        })
+        this.setLocalHistory();
+        this.getSearchList();
+        setTimeout(() => {
+            this.getSearchSuggestList();
+        }, 500)
+    },
+    // 跳转至播放页面
+    toPlay(event) {
+        let musicId = event.currentTarget.dataset.musicid;
+        let index = event.currentTarget.dataset.index;    //拿到通过点击传到事件对象里的数据
+        this.setData({
+            index
+        })
+        // 路由跳转传参:query参数 
+        wx.navigateTo({
+            url: "/pages/play/play?musicId=" + musicId
+        })
+        console.log(event)
     },
 
     /**

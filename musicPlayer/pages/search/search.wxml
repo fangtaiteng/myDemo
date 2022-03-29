@@ -1,49 +1,57 @@
 <view class="searchContainer">
     <!-- 搜索框部分 -->
     <view class="search">
-        <input class="searchInput" type="text" placeholder="{{defaultKeyword}}" bindinput="hanleInputChange" value="{{inputValue}}" />
+        <input class="searchInput" type="text" placeholder="{{defaultKeyword}}" bindinput="hanleInputChange" value="{{inputValue}}" bindconfirm="getSearchList" bindfocus="handleFocus"/>
         <text wx:if="{{inputContent.length}}" class="iconfont icon-runtongyiyaoyihuifu_chacha-29" bindtap="clearInput"></text>
     </view>
-    <!-- 搜索建议内容 -->
-    <block wx:if="{{inputContent.length}}">
-        <view class="searchContent">
-            <view class="searchItem" wx:for="{{searchList}}" wx:key="id">
-                <text class="iconfont icon-sousuo"></text>
-                <text class="itemContent">{{item.name}}</text>
+    <!-- ----------------------搜索前的页面------------------------ -->
+    <block wx:if="{{!searchList.length}}">
+        <!-- 搜索建议内容 -->
+        <block wx:if="{{inputContent.length}}">
+            <view class="searchContent">
+                <view class="searchItem" wx:for="{{searchSuggestList}}" wx:key="id">
+                    <text class="iconfont icon-sousuo"></text>
+                    <text class="itemContent">{{item.keyword}}</text>
+                </view>
             </view>
-        </view>
+        </block>
+        <!-- 历史记录 -->
+        <block wx:else>
+            <view wx:if="{{historyArr.length}}" class="history">
+                <view class="header">
+                    <text class="searchHistory">搜索历史</text>
+                    <text class="clear" bindtap="clearHistory">清空</text>
+                </view>
+                <view class="historyList">
+                    <view class="historyItem" wx:for="{{historyArr}}" wx:key="{{item}}" bindtap="tapToSearch" data-keyword="{{item}}">
+                        {{item}}
+                    </view>
+                </view>
+            </view>
+            <!-- 热搜榜 -->
+            <view class="hotSearch">
+                <text class="title">热搜榜</text>
+                <view class="songList">
+                    <view class="songItem" wx:for="{{hotSearchList}}" wx:key="score" bindtap="tapToSearch" data-keyword="{{item.searchWord}}">
+                        <text class="rank {{index<3? 'top3':''}}">{{index+1}}</text>
+                        <text class="name">{{item.searchWord}}</text>
+                        <image wx:if="{{item.iconUrl}}" src="{{item.iconUrl}}" />
+                    </view>
+                </view>
+            </view>
+        </block>
     </block>
-
-    <!-- 历史记录 -->
+    <!-- -----------------------------搜索的结果内容---------------------- -->
     <block wx:else>
-        <view class="history">
-        <view class="header">
-            <text class="searchHistory">搜索历史</text>
-            <text class="clear">清空</text>
-        </view>
-        <view class="historyList">
-            <text class="historyItem">好心分手</text>
-            <text class="historyItem">好心</text>
-            <text class="historyItem">好心分手</text>
-            <text class="historyItem">好心分手</text>
-            <text class="historyItem">好心分手</text>
-            <text class="historyItem">好心分手</text>
-            <text class="historyItem">好心分手</text>
-            <text class="historyItem">好心分手</text>
-            <text class="historyItem">好心分手</text>
-        </view>
-    </view>
-    <!-- 热搜榜 -->
-    <view class="hotSearch">
-        <text class="title">热搜榜</text>
-        <view class="songList">
-            <view class="songItem" wx:for="{{hotSearchList}}" wx:key="score">
-                <text class="rank">{{index+1}}</text>
-                <text class="name">{{item.searchWord}}</text>
-                <image wx:if="{{item.iconUrl}}" src="{{item.iconUrl}}" />
+        <view class="result">
+            <view class="resultItem" wx:for="{{searchList}}" wx:key="id" data-musicid="{{item.id}}" data-index="{{index}}" bindtap="toPlay">
+                <view class="songName">{{item.name}}</view>
+                <view class="detail">
+                     <text class="artist1">{{item.ar[0].name}}</text>
+                     <text wx:if="{{item.ar[1]}}" class="artist2">/{{item.ar[1].name}}</text>
+                </view>
+               
             </view>
         </view>
-    </view>
     </block>
-    
 </view>
