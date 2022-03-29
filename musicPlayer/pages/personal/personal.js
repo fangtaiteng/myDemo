@@ -35,6 +35,10 @@ Page({
 
      // 获取用户详细信息
      async getUserDetail(userId) {
+        wx.showLoading({
+            title: '加载中...',
+            mask: true,
+        });
         let detail = await request('/user/detail',{uid:userId});
         this.setData({
             userDetail:detail.profile

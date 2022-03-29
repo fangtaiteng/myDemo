@@ -20,6 +20,10 @@ Page({
     },
     // 获取歌单列表
     async getSongList(url) {
+        wx.showLoading({
+            title: '加载中',
+            mask: true,
+        });
         let result = await request(url);
         if (url == "/top/playlist/highquality") {
             this.setData({

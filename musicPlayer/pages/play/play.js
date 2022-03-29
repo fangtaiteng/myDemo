@@ -107,6 +107,10 @@ Page({
     /************************************************获取音乐详情，歌词，播放链接*********************************************************************************/
 
     async getMusicInfo(musicId) {
+        wx.showLoading({
+            title: '加载中...',
+            mask: true,
+        });
         /*-------------------------------获取音乐详细信息---------------------------------------*/
         let getSongDetail = await request('/song/detail', { ids: musicId });
         let duration = moment(getSongDetail.songs[0].dt).format('mm:ss');  //获取音乐时长并调整格式

@@ -48,6 +48,10 @@ Page({
 
     // 获取歌单信息
     async getRankListData(listId) {
+        wx.showLoading({
+            title: '加载中',
+            mask: true,
+        });
         let result = await request('/playlist/track/all', { id: listId, limit: 100 })
         console.log(result)
         this.setData({

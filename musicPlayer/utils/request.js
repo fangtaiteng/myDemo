@@ -31,6 +31,9 @@ export default (url, data = {}, method = 'GET') => {
             fail: (err) => {
                 console.log('请求失败:', err);
                 reject(err);
+            },
+            complete:()=>{
+                wx.hideLoading()
             }
         })
     })

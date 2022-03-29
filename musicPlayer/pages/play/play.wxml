@@ -1,7 +1,7 @@
 <view class="song-detail-container">
     <!-- 歌曲封面以及歌曲信息 -->
     <view class="song-detail">
-        <image class="song-image" src="{{song.al.picUrl}}"></image>
+        <image wx:if="{{song.al.picUrl}}" class="song-image" src="{{song.al.picUrl}}"></image>
         <view class="song-info">
             <text class="song-name">{{song.name}}</text>
             <text class="singer">{{song.ar[0].name}}</text>

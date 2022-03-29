@@ -94,6 +94,10 @@ Page({
 
     // 获取搜索数据的功能函数
     async getSearchList() {
+        wx.showLoading({
+            title: '加载中...',
+            mask: true,
+        });
         let searchList = await request('/cloudsearch', { keywords: this.data.inputContent });
         this.setData({
             searchList: searchList.result.songs

@@ -63,6 +63,10 @@ Page({
 
     //获取每日推荐歌曲
     async getRecommenSong() {
+        wx.showLoading({
+            title: '加载中',
+            mask: true,
+        });
         let recommendSong = await request('/recommend/songs');
         this.setData({
             SongDetailData: recommendSong.data.dailySongs
@@ -71,6 +75,10 @@ Page({
 
     // 获取任意歌单歌曲
     async getSongDetail(id) {
+        wx.showLoading({
+            title: '加载中',
+            mask: true,
+        });
         let SongDetail = await request('/playlist/track/all', { id });
         this.setData({
             SongDetailData: SongDetail.songs
