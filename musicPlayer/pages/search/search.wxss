@@ -131,7 +131,14 @@
 }
 .songName{
     margin-bottom: 20rpx;
+    max-width: 650rpx;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap
 }
 .detail{
     font-size: 24rpx;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap
 }

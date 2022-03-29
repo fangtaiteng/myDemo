@@ -5,7 +5,7 @@
         <text wx:if="{{inputContent.length}}" class="iconfont icon-runtongyiyaoyihuifu_chacha-29" bindtap="clearInput"></text>
     </view>
     <!-- ----------------------搜索前的页面------------------------ -->
-    <block wx:if="{{!searchList.length}}">
+    <block wx:if="{{searchList.length==0}}">
         <!-- 搜索建议内容 -->
         <block wx:if="{{inputContent.length}}">
             <view class="searchContent">

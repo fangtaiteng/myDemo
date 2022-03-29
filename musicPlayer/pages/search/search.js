@@ -15,7 +15,7 @@ Page({
         searchList: [],               //搜索结果数据
         searchSuggestList: [],
         inputValue: '',                //搜索框的值
-        historyArr: [],               //搜索历史
+        historyArr: [],               //搜索历史               
 
 
     },
@@ -65,7 +65,8 @@ Page({
     hanleInputChange(event) {
         let value = event.detail.value.trim();
         this.setData({
-            inputContent: value
+            inputContent: value,
+            searchList:[]
         })
         if (isSend) {
             return
@@ -76,9 +77,6 @@ Page({
         setTimeout(async () => {
             isSend = false;
         }, 300);
-        // if (this.inputContent == '') {
-
-        // }
 
     },
 
@@ -87,7 +85,8 @@ Page({
         if (this.data.inputContent!='') {
             let searchSuggestList = await request('/search/suggest', { keywords: this.data.inputContent, type: 'mobile' });
             this.setData({
-                searchSuggestList: searchSuggestList.result.allMatch
+                searchSuggestList: searchSuggestList.result.allMatch,
+                isDone:true
             })
         }
 
@@ -150,20 +149,22 @@ Page({
         this.setData({
             searchList: []
         })
+        this.getSearchSuggestList();
 
     },
     // 点击历史记录或者热搜列表进行搜索
     tapToSearch(event) {
         let keyword = event.currentTarget.dataset.keyword;
         this.setData({
+            searchSuggestList: [],
             inputContent: keyword,
             inputValue: keyword
         })
         this.setLocalHistory();
         this.getSearchList();
-        setTimeout(() => {
-            this.getSearchSuggestList();
-        }, 500)
+        // setTimeout(() => {
+        //     this.getSearchSuggestList();
+        // }, 1000)
     },
     // 跳转至播放页面
     toPlay(event) {

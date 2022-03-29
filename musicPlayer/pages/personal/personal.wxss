@@ -1,3 +1,7 @@
+.personalContainer{
+    background-color: #F1F3F5;
+    height: 100%;
+}
 /* 用户基本信息 */
 .top{
     height: 400rpx;
@@ -59,14 +63,15 @@
 }
 .myMusicItem{
     display: flex;
-    background-color: rgb(238, 238, 238);
+    height: 120rpx;
+    background-color: rgb(255, 255, 255);
     margin-bottom: 10rpx;
     align-items: center;
     border-radius: 10rpx;
 }
 .myMusicItemImg{
-    height: 120rpx;
-    width: 120rpx;
+    height: 110rpx;
+    width: 110rpx;
     margin-right: 20rpx;
     border-radius: 10rpx;
 }
