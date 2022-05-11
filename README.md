@@ -40,32 +40,32 @@
 
 **主页**
 
-<img src="C:\Users\T-T\AppData\Roaming\Typora\typora-user-images\image-20220511151236999.png" alt="image-20220511151236999" style="zoom:25%;" />
+<img src="https://github.com/fangtaiteng/myDemo/blob/master/%E4%B8%BB%E9%A1%B5.jpg" />
 
 **搜索页**
 
-<img src="C:\Users\T-T\AppData\Roaming\Typora\typora-user-images\image-20220511151411233.png" alt="image-20220511151411233" style="zoom:25%;" />
+<img src="https://github.com/fangtaiteng/myDemo/blob/master/%E6%90%9C%E7%B4%A2.jpg" />
 
 **个人页**
 
-<img src="C:\Users\T-T\AppData\Roaming\Typora\typora-user-images\image-20220511151442328.png" alt="image-20220511151442328" style="zoom:25%;" />
+<img src="https://github.com/fangtaiteng/myDemo/blob/master/%E4%B8%AA%E4%BA%BA%E9%A1%B5.jpg" />
 
 **推荐歌单详情页**
 
-<img src="C:\Users\T-T\AppData\Roaming\Typora\typora-user-images\image-20220511151646885.png" alt="image-20220511151646885" style="zoom:25%;" />
+<img src="https://github.com/fangtaiteng/myDemo/blob/master/%E6%8E%A8%E8%8D%90%E6%AD%8C%E5%8D%95%E8%AF%A6%E6%83%85%E9%A1%B5.jpg" />
 
 **歌单详情页**
 
-<img src="C:\Users\T-T\AppData\Roaming\Typora\typora-user-images\image-20220511151713539.png" alt="image-20220511151713539" style="zoom:25%;" />
+<img src="https://github.com/fangtaiteng/myDemo/blob/master/%E6%AD%8C%E5%8D%95%E8%AF%A6%E6%83%85%E9%A1%B5.jpg" />
 
 **播放页**
 
-<img src="C:\Users\T-T\AppData\Roaming\Typora\typora-user-images\image-20220511151810751.png" alt="image-20220511151810751" style="zoom:25%;" />
+<img src="https://github.com/fangtaiteng/myDemo/blob/master/%E6%92%AD%E6%94%BE%E9%A1%B5.jpg" />
 
 **动态效果**
 
-<img src="C:\Users\T-T\Downloads\aaccd4611a9fcf6b2fd9ad2ac0970014_.gif" alt="aaccd4611a9fcf6b2fd9ad2ac0970014_" style="zoom: 50%;" />
+<img src="https://github.com/fangtaiteng/myDemo/blob/master/%E5%8A%A8%E5%9B%BE1.gif" />
 
 
 
-<img src="C:\Users\T-T\Downloads\WeChat_20220511153417 (online-video-cutter.com)_.gif" alt="WeChat_20220511153417 (online-video-cutter.com)_" style="zoom:50%;" />
+<img src="https://github.com/fangtaiteng/myDemo/blob/master/%E5%8A%A8%E5%9B%BE2.gif" />
